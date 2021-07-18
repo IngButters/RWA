@@ -1,0 +1,35 @@
+{
+  "name": "bstrap_page",
+  "version": "1.0.0",
+  "description": "Bstrap page with sass",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "sass scss:assets/css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IngButters/RWA.git"
+  },
+  "keywords": [
+    "Bootstrap",
+    "bootstrap-v5",
+    "sass",
+    "learn-bootstrap",
+    "learn-sass",
+    "RWA",
+    "RWA-page"
+  ],
+  "author": "Andres Mendoza",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IngButters/RWA/issues"
+  },
+  "homepage": "https://github.com/IngButters/RWA#readme",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.3",
+    "autoprefixer": "^10.3.1",
+    "bootstrap": "^5.0.2",
+    "postcss-cli": "^8.3.1",
+    "sass": "^1.35.2"
+  }
+}
