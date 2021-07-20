@@ -1,10 +1,13 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 @app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+@app.route("/Inicio")
+def home_page():
+    return render_template('home.html')# this redirects to my html file
 
-if __name__ == "__main__":
-    app.run(debug=True) #This is to turn on debug mode
+@app.route('/Tetis')
+def tetis_page():
+    return render_template('tetis.html')
+
