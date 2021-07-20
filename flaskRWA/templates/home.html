@@ -7,6 +7,52 @@
 {% endblock %}
 
 {% block content %}
-  this is our content for our homepage
+         <!-- Start the intro section -->
+         <section id="home" class="intro-section">
+          <div class="container">
+              <div class="row align-items-center text-white">
+                  <!-- Start the intro -->
+                  <div class="col-md-6 intros text-start">
+                      <h1 class="display-2">
+                          <span class="display-2--intro">Hey!, I'm Andres</span>
+                          <span class="display-2--description lh-base">
+                              Lorem ipsum dolor Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem quod quo earum dolor alias nobis praesentium dolores voluptate distinctio maiores? Quidem beatae repellendus explicabo nobis ex ea fugiat consectetur distinctio.
+                          </span>
+                      </h1>
+                  </div>
+                  <!-- Start the image content -->
+                  <div class="col-md-6 intros text-end">
+                      <div class="mountain-box">
+                          <img src="{{ url_for('static', filename='images/art/Mountain_Isometric.png') }}" alt="Mountain Isometric" class="img-fluid">
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#ffffff" fill-opacity="1" d="M0,32L14.1,42.7C28.2,53,56,75,85,101.3C112.9,128,141,160,169,192C197.6,224,226,256,254,261.3C282.4,267,311,245,339,213.3C367.1,181,395,139,424,138.7C451.8,139,480,181,508,186.7C536.5,192,565,160,593,160C621.2,160,649,192,678,176C705.9,160,734,96,762,112C790.6,128,819,224,847,245.3C875.3,267,904,213,932,197.3C960,181,988,203,1016,181.3C1044.7,160,1073,96,1101,90.7C1129.4,85,1158,139,1186,144C1214.1,149,1242,107,1271,96C1298.8,85,1327,107,1355,128C1383.5,149,1412,171,1426,181.3L1440,192L1440,320L1425.9,320C1411.8,320,1384,320,1355,320C1327.1,320,1299,320,1271,320C1242.4,320,1214,320,1186,320C1157.6,320,1129,320,1101,320C1072.9,320,1045,320,1016,320C988.2,320,960,320,932,320C903.5,320,875,320,847,320C818.8,320,791,320,762,320C734.1,320,706,320,678,320C649.4,320,621,320,593,320C564.7,320,536,320,508,320C480,320,452,320,424,320C395.3,320,367,320,339,320C310.6,320,282,320,254,320C225.9,320,198,320,169,320C141.2,320,113,320,85,320C56.5,320,28,320,14,320L0,320Z"></path></svg>
+      </section>
+
+      <!-- Start the companies section -->
+      <section id="companies" class="companies">
+          <div class="container">
+              <div class="row text-center">
+                  <h4 class="texto-convenios fw-bold lead mb-3">Convenio Interadministrativo</h4>
+                  <div class="heading-line mb-5"></div>
+
+              </div>
+          </div>
+
+      <!-- start the companies content -->
+      <div class="container">
+          <div class="row">
+              <div class="col-md-2 col-lg-2">
+                  <div class="companies__logo-box shadow-sm"><img src="{{ url_for('static', filename='images/companies/cortolima.png') }}" alt="Logo cortolima" class="img-fluid"></div>
+              </div>
+              <div class="col-md-2 col-lg-2">
+                  <div class="companies__logo-box shadow-sm"><img src="{{ url_for('static', filename='images/companies/UT.png') }}" alt="Logo UT" class="img-fluid"></div>
+              </div>
+          </div>
+      </div>
+
+      </section>
 
 {% endblock %}
