@@ -3,11 +3,10 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from flask_sqlalchemy import SQLAlchemy
+import sqlite3
+
+currentdirectory = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
-
-filename = 'C:/Users/Bender/Desktop/Mapas_ERA/RWA/RWA/flaskRWA/static/precipitacion_sup.csv'
-df_precip_sup = pd.read_csv(filename)
-
 
 
 
@@ -21,18 +20,17 @@ def tetis_page():
 
     return render_template('tetis.html')
 
+
+@app.route("/climatologia")
+def climatologia_page():
+    #Connect the database
+    connection = sqlite3.connect(currentdirectory + "\clima.db")
+    cursor = connection.cursor()
+
+    return render_template('climatologia.html')# this redirects to my html file
+
 if __name__ == '__main__': #checks if our file executes directly and not imported
     app.run(debug=True) #
 
 
 
-
-"""     if request.method == 'POST':
-        file = request.files['csvfile']
-        if not os.path.isdir('static'):
-            os.mkdir('static')
-        filepath = os.path.join('static', file.filename)
-        file.save(filepath)
-      
-        return render_template('tetis.html')
-        #'El nombre del archivo seleccionado es: {}'.format(file.filename) """
