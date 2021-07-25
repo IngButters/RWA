@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    
+}
+html {
+    /* height: 100%; */
+    font-size: 62.5%;
+  }
+
+h1 {
+    color: #375F92;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.table-div {
+    overflow:scroll;
+    height:300px;
+    width:750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px black;
+    
+}
+
+th {
+    border-collapse: collapse;
+    text-align: center;
+    background-color: #375F92;
+    color: white;
+    width: 10px;
+}
+
+tr td{
+    width: 20px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+.containerSeleccion{
+    font-size: 1.4rem;
+    margin: 2rem;
+
+}
+
+label {
+    vertical-align: middle;
+}
+
+.seleccion-cambio-clima{
+    margin: 1rem;
+    text-align: center;
+}
+
+.seleccion-proy-temp {
+    margin: 1rem;
+    text-align: center;
+
+}
+
+/* Precipitacion */
+.seleccion-estacion {
+    margin: 1rem;
+    text-align: center;
+
+}
+
+.seleccion-estacion label {
+    height: 25rem;
+}
+
+.seleccion-estacion select {
+    height: 25rem;
+}
+
+/* Temperatura */
+.seleccion-estacion-temp {
+    margin: 1rem;
+    text-align: center;
+
+}
+
+.seleccion-estacion-temp label {
+    height: 25rem;
+}
+
+.seleccion-estacion-temp select {
+    height: 25rem;
+}
+
+
+/* Archivo Tetis */
+.seleccion-archivo-tetis {
+    margin: 1rem;
+    text-align: center;
+
+}
+
+
+

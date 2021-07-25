@@ -3,3 +3,90 @@
 {% block title %}
     Climatología
 {% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/climatologia.css') }}">
+<h1>Generación de archivo Tetis</h1>
+
+<!-- <div class="table-div">
+    <table class="table">                
+    <tbody>
+       
+        {% for table in tables %}
+        
+            
+            <td>{{ table|safe }}</td>
+        
+        {% endfor %}
+    </tbody> -->
+
+<div class="containerSeleccion">
+    <form method="POST">
+
+        <!-- Escenarios de cambio climatico Si, No -->
+        <div class="seleccion-cambio-clima">
+            <label for="cambClima">Aplicar escenarios de cambio climático:</label>
+            <select name="cambClima" method="GET" action="/">
+                <option value="{{cambioClimatico[0]}}" selected>{{cambioClimatico[0]}}</option>
+                {% for cambClima in cambioClimatico[1:] %}
+                    <option value="{{cambClima}}">{{cambClima}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Proyección temporal -->
+        <div class="seleccion-proy-temp">
+            <label for="proyTemp">Seleccione la proyección temporal:</label>
+            <select name="proyTemp" method="GET" action="/">
+                <option value="{{proyecTemporal[0]}}" selected>{{proyecTemporal[0]}}</option>
+                {% for proyTemp in proyecTemporal[1:] %}
+                    <option value="{{proyTemp}}">{{proyTemp}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Datos de precipitación -->
+        <div class="seleccion-estacion">
+            <label for="estacion">Seleccione estaciones en superficie con datos de precipitación:</label>
+            <select multiple name="estacion" method="GET" action="/">
+                <option value="{{estaciones[0]}}" selected>{{estaciones[0]}}</option>
+                {% for estacion in estaciones[1:] %}
+                    <option value="{{estacion}}">{{estacion}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Datos de temperatura -->
+        <div class="seleccion-estacion-temp">
+            <label for="estacionTemp">Seleccione estaciones en superficie con datos de temperatura:</label>
+            <select multiple name="estacionTemp" method="GET" action="/">
+                <option value="{{estacionesTemp[0]}}" selected>{{estacionesTemp[0]}}</option>
+                {% for estacionTemp in estacionesTemp[1:] %}
+                    <option value="{{estacionTemp}}">{{estacionTemp}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Archivo Tetis -->
+        <div class="seleccion-archivo-tetis">
+            <label for="archivoTetis">Seleccione el tipo de archivo a generar:</label>
+            <select name="archivoTetis" method="GET" action="/">
+                <option value="{{archivoTetis[0]}}" selected>{{archivoTetis[0]}}</option>
+                {% for archivoTetis in archivoTetis[1:] %}
+                    <option value="{{archivoTetis}}">{{archivoTetis}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Generar Archivo</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+{% endblock %}
+
