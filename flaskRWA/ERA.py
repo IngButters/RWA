@@ -50,19 +50,19 @@ def abrirArchivos(ruta, letra, columnas):
     """
     if letra == "P":
         df_datos = pd.read_csv(ruta, usecols = columnas)
-        df_datos = df_datos.fillna(-1)
+        #df_datos = df_datos.fillna(-1)
         #df_datos.fecha = pd.to_datetime(df_datos.fecha)
 
     else:
         df_datos = pd.read_csv(ruta, usecols = columnas)
-        df_datos = df_datos.fillna(-99)
+        #df_datos = df_datos.fillna(-99)
         #df_datos.fecha = pd.to_datetime(df_datos.fecha, usecols = columnas)
 
     return df_datos
 
 
 #--------------------------------Generar archivo de evento txt-----------------------------------------
-def archivoEvento(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet):
+def archivoEvento(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet, nomb_archivo):
 
     #Inciar condicion de precipitacion
     if isinstance(df_precip_sup, pd.DataFrame):
@@ -76,9 +76,11 @@ def archivoEvento(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet):
     else:
         df_temp_sup_cond = df_tempSup
 
+    
+
 
     #---------ENCABEZADO-----------------------------------------------
-    Tetis_file = open("Tetis_file.txt","w+")
+    Tetis_file = open(nomb_archivo+".txt","w+")
     
     #Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
     #Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
@@ -155,6 +157,92 @@ def archivoEvento(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet):
 
     
 
+def trimestre_precip(df_precipSup, rcp_clima):
+    df_precipSup['date'] = pd.date_range(start='01/01/1950', periods=len(df_precipSup), freq='D')
+    df_precipSup.set_index(['date'], inplace=True)
+    df_precipSup_2011_2040 = df_precipSup.copy(deep=True)
+    df_precipSup_2041_2070 = df_precipSup.copy(deep=True)
+    df_precipSup_2071_2100 = df_precipSup.copy(deep=True)
+
+    if rcp_clima == '2.5':
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] * 0.9327
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] * 1.0751
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] * 1.0936
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] * 1.0786
+
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] * 0.9577
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] * 1.1045
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] * 1.205
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] * 1.0476
+
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] * 0.9461
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] * 1.089
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] * 1.1974
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] * 1.0336
+
+    elif rcp_clima == '4.5':
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] * 0.9387
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] * 1.0205
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] * 1.1089
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] * 1.0943
+
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] * 0.9668
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] * 0.995
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] * 1.1834
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] * 1.0442
+
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] * 1.0003
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] * 1.0362
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] * 1.1974
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] * 1.0675
+
+    elif rcp_clima == '6.0':
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] * 0.9389
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] * 1.0213
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] * 1.1054
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] * 1.1117
+
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] * 0.9814
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] * 1.0586
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] * 1.1846
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] * 1.039
+
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] * 1.0249
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] * 1.0707
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] * 1.2297
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] * 1.033
+
+    elif rcp_clima == '8.5':
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([12,1,2])] * 0.9301
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([3,4,5])] * 1.0551
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([6,7,8])] * 1.1334
+        df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] = df_precipSup_2011_2040[df_precipSup_2011_2040.index.month.isin([9,10,11])] * 1.1503
+
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([12,1,2])] * 0.9776
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([3,4,5])] * 1.0996
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([6,7,8])] * 1.2304
+        df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] = df_precipSup_2041_2070[df_precipSup_2041_2070.index.month.isin([9,10,11])] * 1.0842
+
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([12,1,2])] * 1.0647
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([3,4,5])] * 1.1436
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([6,7,8])] * 1.2125
+        df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] = df_precipSup_2071_2100[df_precipSup_2071_2100.index.month.isin([9,10,11])] * 0.9771
+
+    df_precipSup_2011_2040.reset_index(inplace=True)
+    df_precipSup_2041_2070.reset_index(inplace=True)
+    df_precipSup_2071_2100.reset_index(inplace=True)
+    
+    del df_precipSup_2011_2040['date']
+    del df_precipSup_2041_2070['date']
+    del df_precipSup_2071_2100['date']
+
+    return (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100)
+
+
+
+
+
+
 
 
 
@@ -185,7 +273,7 @@ def climatologia_page():
         #print(cambioClimaticoSiNo)
         #print(cambioClimaticoSiNo[0])
 
-        proyecTemporal = ['No Aplica','Anual', 'Trimestral', 'Ensamble']
+        proyecTemporal = ['No aplica','Anual', 'Trimestral', 'Ensamble']
         #Selecciona cambio proyeccion temporal
         proyTemporal_sel = request.form.getlist('proyTemp')
 
@@ -200,7 +288,7 @@ def climatologia_page():
 
         str_rcps_sel = " " 
         # convert string  
-        proyTemporal_sel = str_proy_temp.join(proyTemporal_sel)
+        str_rcps_sel = str_rcps_sel.join(rcps_sel)
 
         
         estaciones = df_precip_sup.columns.values
@@ -236,20 +324,22 @@ def climatologia_page():
                 #--------------------------Lectura datos de temperatura---------------------------------------
                 rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                df_tempSup = df_tempSup.fillna(-1)
 
                 df_precipSup = verif_est_precip
                 #--------------------------------Generar archivo Tetis-----------------------------------------------
-                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloTemp')
 
             #Seleccion = Ninguna en temperatura
             elif verif_est_temp == 'None':
                 #--------------------------Lectura datos de precipitación-------------------------------------
                 rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+                df_precipSup = df_precipSup.fillna(-99)
 
                 df_tempSup = verif_est_temp
 
-                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloPrecip')
 
 
             else:
@@ -257,12 +347,14 @@ def climatologia_page():
                 #--------------------------Lectura datos de precipitación-------------------------------------
                 rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+                df_precipSup = df_precipSup.fillna(-99)
 
                 #--------------------------Lectura datos de temperatura---------------------------------------
                 rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                df_tempSup = df_tempSup.fillna(-1)
                 #--------------------------------Generar archivo Tetis-----------------------------------------------
-                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'precipYtemp')
 
         else:
             #Estaciones seleccionadas de precipitacion
@@ -281,79 +373,686 @@ def climatologia_page():
             verif_est_temp = str_Temp.join(tempGet)
             #print(verif_est_temp)
 
-            if proyTemporal_sel == 'No Aplica':
 
-
+            if proyTemporal_sel == 'Anual':
                 #Seleccion = Ninguna en precipitacion
-                if verif_est_precip == 'None':
-                    #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
-                    df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                if str_rcps_sel == '2.5':
 
-                    df_precipSup = verif_est_precip
-                    #--------------------------------Generar archivo Tetis-----------------------------------------------
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
-                #Seleccion = Ninguna en temperatura
-                elif verif_est_temp == 'None':
-                    #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
-                    df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+                        df_tempSup_2011_2040 = df_tempSup + 0.89
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
 
-                    df_tempSup = verif_est_temp
+                        df_tempSup_2041_2070 = df_tempSup + 1.26
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
 
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+                        df_tempSup_2071_2100 = df_tempSup + 1.22
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
 
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
-                else:
-                            
-                    #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
-                    df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
-                    #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
-                    df_tempSup = abrirArchivos(rutaT, "T", tempGet)
-                    #--------------------------------Generar archivo Tetis-----------------------------------------------
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+                        df_tempSup = verif_est_temp
 
+                        df_precipSup_2011_2040 = df_precipSup * 1.0936
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
 
-            elif proyTemporal_sel == 'Anual':
-                #Seleccion = Ninguna en precipitacion
-                if verif_est_precip == 'None':
-                    #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
-                    df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        df_precipSup_2041_2070 = df_precipSup * 1.1320
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
 
-                    df_precipSup = verif_est_precip
-                    #--------------------------------Generar archivo Tetis-----------------------------------------------
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
-
-                #Seleccion = Ninguna en temperatura
-                elif verif_est_temp == 'None':
-                    #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
-                    df_precipSup = abrirArchivos(rutaP, "P", precpGet)
-
-                    df_tempSup = verif_est_temp
-
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+                        df_precipSup_2071_2100 = df_precipSup * 1.0855
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
 
 
-                else:
-                            
-                    #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
-                    df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
-                    #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
-                    df_tempSup = abrirArchivos(rutaT, "T", tempGet)
-                    #--------------------------------Generar archivo Tetis-----------------------------------------------
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet)
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.0936
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1320
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.0855
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 0.89
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.26
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 1.22
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+                elif str_rcps_sel == '4.5':
+
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.01
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.79
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.01
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        df_tempSup = verif_est_temp
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1089
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1221
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1425
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1089
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1221
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1425
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.01
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.79
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.01
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                elif str_rcps_sel == '6.0':
+
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+
+                        df_tempSup_2011_2040 = df_tempSup + 0.88
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.58
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.32
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        df_tempSup = verif_est_temp
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1054
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1311
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1724
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1054
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1311
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1724
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 0.88
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.58
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.32
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+                elif str_rcps_sel == '8.5':
+
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.06
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 2.23
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 3.68
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        df_tempSup = verif_est_temp
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1334
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1856
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1872
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1334
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1856
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1872
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.06
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 2.23
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 3.68
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070, df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+            elif proyTemporal_sel == 'Trimestral':
+                if str_rcps_sel == '2.5':
+
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+
+                        df_tempSup_2011_2040 = df_tempSup + 0.89
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.26
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 1.22
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        df_tempSup = verif_est_temp
+
+                        (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
+
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.0936
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1320
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.0855
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 0.89
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.26
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 1.22
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+                elif str_rcps_sel == '4.5':
+
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.01
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.79
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.01
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        df_tempSup = verif_est_temp
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1089
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1221
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1425
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1089
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1221
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1425
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.01
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.79
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.01
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                elif str_rcps_sel == '6.0':
+
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+
+                        df_tempSup_2011_2040 = df_tempSup + 0.88
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.58
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.32
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        df_tempSup = verif_est_temp
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1054
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1311
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1724
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1054
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1311
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1724
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 0.88
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 1.58
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 2.32
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+                elif str_rcps_sel == '8.5':
+
+                    if verif_est_precip == 'None':
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.06
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 2.23
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 3.68
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                        df_precipSup = verif_est_precip
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    #Seleccion = Ninguna en temperatura
+                    elif verif_est_temp == 'None':
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        df_tempSup = verif_est_temp
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1334
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1856
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1872
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+                    else:
+                                
+                        #--------------------------Lectura datos de precipitación-------------------------------------
+                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+
+                        #--------------------------Lectura datos de temperatura---------------------------------------
+                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+
+                        df_precipSup_2011_2040 = df_precipSup * 1.1334
+                        df_precipSup_2011_2040 = df_precipSup_2011_2040.fillna(-99) 
+
+                        df_precipSup_2041_2070 = df_precipSup * 1.1856
+                        df_precipSup_2041_2070 = df_precipSup_2041_2070.fillna(-99) 
+
+                        df_precipSup_2071_2100 = df_precipSup * 1.1872
+                        df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-99)   
+
+                        df_tempSup_2011_2040 = df_tempSup + 1.06
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        df_tempSup_2041_2070 = df_tempSup + 2.23
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
+                        df_tempSup_2071_2100 = df_tempSup + 3.68
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+
+                        #--------------------------------Generar archivo Tetis-----------------------------------------------
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070, df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+
+
+
+
+                        
+
+                        
 
             else:
                 pass
+
 
         
 
