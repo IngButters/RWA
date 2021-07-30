@@ -70,6 +70,13 @@ label {
 
 }
 
+.seleccion-rcps{
+    margin: 1rem;
+    text-align: center;
+
+}
+
+
 /* Precipitacion */
 .seleccion-estacion {
     margin: 1rem;
