@@ -80,6 +80,18 @@
             </select>
         </div>
 
+        <!-- Calculo evapotranspiracion-->
+        <div class="seleccion-calculo-evapotranspiracion">
+            <label for="calcEvapot">Calular la evapotranspiración:</label>
+            <select title='Calular la evapotranspiración' name="calcEvapot" method="GET" action="/">
+                <option value="{{calcEvapot[0]}}" selected>{{calcEvapot[0]}}</option>
+                {% for calcEvapot_seleccionada in calcEvapot[1:] %}
+                    <option value="{{calcEvapot_seleccionada}}">{{calcEvapot_seleccionada}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
         <!-- Archivo Tetis -->
         <div class="seleccion-archivo-tetis">
             <label for="archivoTetis">Seleccione el tipo de archivo a generar:</label>
