@@ -155,6 +155,87 @@ def archivoEvento(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet, nom
     Tetis_file.close()
     return Tetis_file
 
+
+
+
+
+
+#-------------------------------------------------------Archivo CEDEX------------------------------------------------------------------------
+def archivoCEDEX(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet, nomb_archivo):
+
+    #Inciar condicion de precipitacion
+    if isinstance(df_precip_sup, pd.DataFrame):
+        df_precip_sup_cond = df_precip_sup.loc[0].values[0]
+    else:
+        df_precip_sup_cond = df_precip_sup
+
+        #Inciar condicion de precipitacion
+    if isinstance(df_tempSup, pd.DataFrame):
+        df_temp_sup_cond = df_tempSup.loc[0].values[0]
+    else:
+        df_temp_sup_cond = df_tempSup
+
+    
+    #---------ENCABEZADO-----------------------------------------------
+    Tetis_file = open(nomb_archivo+".txt","w+")
+    
+    if df_precip_sup_cond == 'None':
+                
+        
+        Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
+        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
+        Tetis_file.write("F           01-01-1950      00:00\n")
+
+    #Temperatura
+        #Temperatura
+        for j in tempGet:
+            arr_t = df_tempSup.T.loc[df_tempSup.T.index == j].to_numpy()
+            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')  
+
+
+
+
+    #elif df_tempSup == 'None':
+    elif df_temp_sup_cond == 'None':
+        #-------------------
+        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
+        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
+        Tetis_file.write("F           01-01-1950      00:00\n")
+
+        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
+        #Precipitacion
+        for i in precpGet:
+            arr_p = df_precip_sup.T.loc[df_precip_sup.T.index == i].to_numpy()
+            Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_p))  +'\n')  
+
+
+
+
+    else:
+        #--------------------
+        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
+        #Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
+        Tetis_file.write("F           01-01-1950      00:00\n")
+
+        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
+        #Precipitacion
+        for i in precpGet:
+            arr_p = df_precip_sup.T.loc[df_precip_sup.T.index == i].to_numpy()
+            Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_p))  +'\n')  
+
+        #Temperatura
+        for j in tempGet:
+            arr_t = df_tempSup.T.loc[df_tempSup.T.index == j].to_numpy()
+            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')  
+
+
+
+    Tetis_file.close()
+    return Tetis_file
+
+
+
+
     
 #-------------------------------------------------------Trimestre Precipitacion---------------------------------------------------------------
 def trimestre_precip(df_precipSup, rcp_clima):
@@ -322,6 +403,33 @@ def trimestre_temp(df_tempSup, rcp_clima):
 
 
 
+def calcEvapotranspiracion(df_tempSup, df_ub, df_radiacion,tempGet):
+    df_new = pd.DataFrame()
+    HR = [82.065943, 82.91073, 85.125509, 85.536313, 85.341042, 83.060406, 80.410283, 78.7061, 79.407464, 83.32468, 85.336647, 84.15651]
+    meses = ['Ene',	'Feb',	'Mar',	'Abr',	'May',	'Jun',	'Jul',	'Ago',	'Sep',	'Oct',	'Nov',	'Dic']
+    K = [0.4, 0.37, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
+
+    for i in df_tempSup.columns:
+        df_new = df_new.append(df_ub.loc[df_ub.index == i])
+
+    df_radiacion = pd.concat([df_radiacion,df_new[['latitud']]],ignore_index = False).sort_values(['latitud'], ascending=True)
+    df_radiacion = df_radiacion.interpolate()
+
+    df_evapot = pd.merge(df_new, df_radiacion, left_index=True, right_index=True)
+
+    
+    for n, j, i, in zip(range(1,13), K, HR):
+        df_tempSup[df_tempSup.index.month.isin([n])] = (j * ((df_tempSup[df_tempSup.index.month.isin([n])])/((df_tempSup[df_tempSup.index.month.isin([n])])+15))) * (1+((50-i)/70))
+
+    for m in meses:
+        df_evapot[[str(m)]] = (df_evapot[[str(m)]]+50)
+
+    for l in tempGet:
+        for n, m in zip(range(1,13),meses):
+            
+            df_tempSup[l][df_tempSup.index.month.isin([n])] = (df_tempSup[l][df_tempSup.index.month.isin([n])] * df_evapot.loc[df_evapot.index == l, m].values[0].squeeze())
+
+    return df_tempSup
 
 
 
@@ -378,10 +486,20 @@ def climatologia_page():
         estacionesTemp = df_temp_sup.columns.values
 
         calcEvapot = ['No','Si']
-        #Selecciona cambio proyeccion temporal
+        #Selecciona el si se calcula la evapotranspiracion
         calcEvapot_sel = request.form.getlist('calcEvapot_seleccionada')
+        str_calcEvapot_sele = " " 
+        # convert string  
+        calcEvapot_sel = str_calcEvapot_sele.join(calcEvapot_sel)
 
-        archivoTetis = ['Evento', 'Cedex']
+
+        archivoTetis = ['Columna', 'Cedex']
+        #Selecciona si el archivo a generar es cedex o evento
+        archivoTetis_sele = request.form.getlist('archivoTetis_sel')
+        str_archivoTetis_sele = " " 
+        # convert string  
+        archivoTetis_sele = str_archivoTetis_sele.join(archivoTetis_sele)
+        
 
         #--------------------------------Ubicacion estaciones-----------------------------------
         ruta_ub = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Ubicacion_puntos.csv'
@@ -415,7 +533,11 @@ def climatologia_page():
 
                 df_precipSup = verif_est_precip
                 #--------------------------------Generar archivo Tetis-----------------------------------------------
-                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloTemp')
+                if archivoTetis_sele == 'Columna':
+                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloTemp')
+
+                else:
+                    archivoCEDEX(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloTemp')
 
             #Seleccion = Ninguna en temperatura
             elif verif_est_temp == 'None':
@@ -426,7 +548,11 @@ def climatologia_page():
 
                 df_tempSup = verif_est_temp
 
-                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloPrecip')
+                if archivoTetis_sele == 'Columna':
+                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloPrecip')
+
+                else:
+                    archivoCEDEX(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloPrecip')
 
 
             else:
@@ -441,7 +567,11 @@ def climatologia_page():
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                 df_tempSup = df_tempSup.fillna(-1)
                 #--------------------------------Generar archivo Tetis-----------------------------------------------
-                archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'precipYtemp')
+                if archivoTetis_sele == 'Columna':
+                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'precipYtemp')
+                
+                else: 
+                    archivoCEDEX(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'precipYtemp')
 
         else:
             #Estaciones seleccionadas de precipitacion
@@ -481,9 +611,15 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        
+                        else:
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -504,9 +640,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
 
 
@@ -542,9 +684,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
 
                 elif str_rcps_sel == '4.5':
@@ -565,9 +713,14 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -588,9 +741,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
 
 
@@ -626,9 +785,16 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
                 elif str_rcps_sel == '6.0':
 
@@ -648,9 +814,15 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                            
+                        else:    
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -671,9 +843,14 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
 
 
@@ -709,9 +886,14 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
 
                 elif str_rcps_sel == '8.5':
@@ -732,9 +914,14 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -755,9 +942,16 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
 
 
@@ -793,9 +987,14 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070, df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070, df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070, df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
             elif proyTemporal_sel == 'Trimestral':
                 if str_rcps_sel == '2.5':
@@ -814,9 +1013,14 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -834,9 +1038,16 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
 
 
@@ -867,9 +1078,16 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
 
                 elif str_rcps_sel == '4.5':
@@ -887,9 +1105,15 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        
+                        else:
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -907,9 +1131,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
 
 
@@ -939,9 +1169,16 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
                 elif str_rcps_sel == '6.0':
 
@@ -958,9 +1195,15 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -978,9 +1221,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
 
 
@@ -1010,9 +1259,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
 
                 elif str_rcps_sel == '8.5':
@@ -1030,9 +1285,16 @@ def climatologia_page():
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                        else:
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
@@ -1050,9 +1312,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
 
 
@@ -1082,9 +1350,15 @@ def climatologia_page():
 
 
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
-                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        if archivoTetis_sele == 'Columna':
+                            archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                        
+                        else:
+                            archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                            archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                            archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
 
 
             if proyTemporal_sel == 'Ensamble':
@@ -1106,9 +1380,16 @@ def climatologia_page():
 
                     df_precipSup = verif_est_precip
                     #--------------------------------Generar archivo Tetis-----------------------------------------------
-                    archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                    archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                    archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                    if archivoTetis_sele == 'Columna':
+                        archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
+                    else:
+                        archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
+                        archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
+                        archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+
 
                 #Seleccion = Ninguna en temperatura
                 elif verif_est_temp == 'None':
@@ -1129,9 +1410,15 @@ def climatologia_page():
 
 
                     #--------------------------------Generar archivo Tetis-----------------------------------------------
-                    archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                    archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                    archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                    if archivoTetis_sele == 'Columna':
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                    else:
+                        archivoCEDEX(df_precipSup_2011_2040, df_tempSup,df_ub, precpGet, tempGet, 'precip_2011_2040')
+                        archivoCEDEX(df_precipSup_2041_2070, df_tempSup,df_ub, precpGet, tempGet, 'precip_2041_2070')
+                        archivoCEDEX(df_precipSup_2071_2100, df_tempSup,df_ub, precpGet, tempGet, 'precip_2071_2100')
+
 
 
 
@@ -1167,9 +1454,16 @@ def climatologia_page():
 
 
                     #--------------------------------Generar archivo Tetis-----------------------------------------------
-                    archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'precip_2011_2040')
-                    archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'precip_2041_2070')
-                    archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'precip_2071_2100')
+                    if archivoTetis_sele == 'Columna':
+                        archivoEvento(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'datos_2011_2040')
+                        archivoEvento(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'datos_2041_2070')
+                        archivoEvento(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'datos_2071_2100')
+
+                    else:
+                        archivoCEDEX(df_precipSup_2011_2040, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'datos_2011_2040')
+                        archivoCEDEX(df_precipSup_2041_2070, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'datos_2041_2070')
+                        archivoCEDEX(df_precipSup_2071_2100, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'datos_2071_2100')
+
 
 
                         

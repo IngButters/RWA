@@ -82,8 +82,8 @@
 
         <!-- Calculo evapotranspiracion-->
         <div class="seleccion-calculo-evapotranspiracion">
-            <label for="calcEvapot">Calular la evapotranspiración:</label>
-            <select title='Calular la evapotranspiración' name="calcEvapot" method="GET" action="/">
+            <label for="calcEvapot_seleccionada">Calular la evapotranspiración:</label>
+            <select title='Calular la evapotranspiración' name="calcEvapot_seleccionada" method="GET" action="/">
                 <option value="{{calcEvapot[0]}}" selected>{{calcEvapot[0]}}</option>
                 {% for calcEvapot_seleccionada in calcEvapot[1:] %}
                     <option value="{{calcEvapot_seleccionada}}">{{calcEvapot_seleccionada}}</option>
@@ -94,11 +94,11 @@
 
         <!-- Archivo Tetis -->
         <div class="seleccion-archivo-tetis">
-            <label for="archivoTetis">Seleccione el tipo de archivo a generar:</label>
-            <select title='Seleccionar tipo de archivo de Tetis' name="archivoTetis" method="GET" action="/">
+            <label for="archivoTetis_sel">Seleccione el formato de las series:</label>
+            <select title='Seleccionar tipo de archivo de Tetis' name="archivoTetis_sel" method="GET" action="/">
                 <option value="{{archivoTetis[0]}}" selected>{{archivoTetis[0]}}</option>
-                {% for archivoTetis in archivoTetis[1:] %}
-                    <option value="{{archivoTetis}}">{{archivoTetis}}</option>
+                {% for archivoTetis_sel in archivoTetis[1:] %}
+                    <option value="{{archivoTetis_sel}}">{{archivoTetis_sel}}</option>
                 {% endfor %}
             </select>
         </div>
