@@ -167,19 +167,19 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
     #Temperature and evapotranspiration
-    elif df_precip_sup_cond == 'None':
+    elif (df_precip_sup_cond == 'None' and isinstance(df_tempSup, pd.DataFrame) and isinstance(df_evapot, pd.DataFrame)):
                 
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
         Tetis_file.write("F           01-01-1950      00:00\n")
 
-        #Temperatura
+        #Temperatura1
         for j in tempGet:
             Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])   +'\n')
 
         for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
 
 
         #-----------------------------INGRESAR LOS DATOS-------------------------------------------------------
@@ -191,7 +191,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
     #Precipitation and evapotranspiration
-    elif (df_temp_sup_cond == 'None' and df_evapot_cond == 'None'):
+    elif (df_temp_sup_cond == 'None' and isinstance(df_precip_sup, pd.DataFrame) and isinstance(df_evapot, pd.DataFrame)):
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
@@ -203,7 +203,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
             Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])   +'\n')  
 
         for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
 
 
 
@@ -225,7 +225,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Evapotranspiration
         for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
 
 
 
@@ -275,7 +275,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
             Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])   +'\n')
         #Evapotranspiration
         for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
 
 
 
@@ -364,7 +364,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
 
 
     #Temperature and evapotranspiration
-    elif df_precip_sup_cond == 'None':
+    elif (df_precip_sup_cond == 'None' and isinstance(df_tempSup, pd.DataFrame) and isinstance(df_evapot, pd.DataFrame)):
                 
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
@@ -378,10 +378,10 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
 
         for k in evapotGet:
             arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')
 
     #Precipitation and evapotranspiration
-    elif df_temp_sup_cond == 'None':
+    elif (df_temp_sup_cond == 'None' and isinstance(df_evapot, pd.DataFrame) and isinstance(df_precip_sup, pd.DataFrame)):
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
@@ -395,7 +395,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
 
         for k in evapotGet:
             arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')
 
     #Only evapotranspiration
     elif (df_temp_sup_cond == 'None' and df_precip_sup_cond == 'None'):
@@ -408,7 +408,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         #Evapotranspiration
         for k in evapotGet:
             arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')
 
 
     #Precipitation and temperature
@@ -450,7 +450,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         #Evapotranspiration
         for k in evapotGet:
             arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
+            Tetis_file.write('E         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')
 
 
     Tetis_file.close()
@@ -684,6 +684,8 @@ def calcEvapotranspiracion(df_tempSup, df_ub, df_radiacion,tempGet):
             df_tempSup[l][df_tempSup.index.month.isin([n])] = (df_tempSup[l][df_tempSup.index.month.isin([n])] * df_evapot.loc[df_evapot.index == l, m].values[0].squeeze())
 
     df_tempSup = df_tempSup.fillna(-1)
+    df_tempSup.reset_index(inplace=True)
+    del df_tempSup['date']
     return df_tempSup
 
 
@@ -773,30 +775,34 @@ def climatologia_page():
             str_Evapot = " " 
             # convert string  
             verif_est_evapot = str_Evapot.join(evapotGet)
-            print(verif_est_evapot)
+            #print(verif_est_evapot)
 
-            #Seleccion = Ninguna en precipitacion
-            if verif_est_precip == 'None':
+            #Seleccion = Ninguna en precipitacion y evapotranspiracion
+            if (verif_est_precip == 'None' and verif_est_evapot == 'None'):
                 #--------------------------Lectura datos de temperatura---------------------------------------
                 rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
-                df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
-                df_ub2 = df_ub.set_index('CODIGO')
-                df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub, df_radiacion, evapotGet)
                 df_tempSup = df_tempSup.fillna(-99)
 
+                #----------------Evapotranspiracion--------------------
+                #df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
+                #df_ub2 = df_ub.set_index('CODIGO')
+                #df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
                 
 
+
                 df_precipSup = verif_est_precip
+
+                df_evapot = verif_est_evapot
                 #--------------------------------Generar archivo Tetis-----------------------------------------------
                 if archivoTetis_sele == 'Columna':
-                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloTemp')
+                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloTempColumna')
 
                 else:
-                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloTemp')
+                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloTempCEDEX')
 
-            #Seleccion = Ninguna en temperatura
-            elif verif_est_temp == 'None':
+            #Seleccion = Ninguna en temperatura y evapotranspiracion
+            elif (verif_est_temp == 'None' and verif_est_evapot == 'None'):
                 #--------------------------Lectura datos de precipitación-------------------------------------
                 rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
@@ -804,11 +810,109 @@ def climatologia_page():
 
                 df_tempSup = verif_est_temp
 
+                df_evapot = verif_est_evapot
+
+                #--------------------------------Generar archivo Tetis-----------------------------------------------
                 if archivoTetis_sele == 'Columna':
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloPrecip')
+                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloPrecipColumna')
 
                 else:
-                    archivoCEDEX(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloPrecip')
+                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloPrecipCEDEX')
+
+            #Seleccion = Ninguna en evapotranspiracion
+            elif verif_est_evapot == 'None':
+                        
+                #--------------------------Lectura datos de precipitación-------------------------------------
+                rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+                df_precipSup = df_precipSup.fillna(-1)
+
+                #--------------------------Lectura datos de temperatura---------------------------------------
+                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                df_tempSup = df_tempSup.fillna(-99)
+
+                df_evapot = verif_est_evapot
+
+
+
+                                #--------------------------------Generar archivo Tetis-----------------------------------------------
+                if archivoTetis_sele == 'Columna':
+                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'precipYtempColumna')
+
+                else:
+                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'precipYtempCEDEX')
+
+            #Ninguna en precipitacion y temperatura
+            elif (verif_est_temp == 'None' and verif_est_precip == 'None'):
+
+                #----------------Evapotranspiracion--------------------
+                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
+                df_ub2 = df_ub.set_index('CODIGO')
+                df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
+ 
+
+                df_tempSup = verif_est_temp
+
+                df_precipSup = verif_est_precip
+
+                print(df_evapot)
+
+
+                #--------------------------------Generar archivo Tetis-----------------------------------------------
+                if archivoTetis_sele == 'Columna':
+                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloEvapotColumna')
+
+                else:
+                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloEvapotCEDEX')
+
+            #Ninguna en precipitacion
+            elif (verif_est_precip == 'None'):
+                #--------------------------Lectura datos de temperatura---------------------------------------
+                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                df_tempSup = abrirArchivos(rutaT, "T", tempGet)
+                df_tempSup = df_tempSup.fillna(-99)
+
+                #----------------Evapotranspiracion--------------------
+                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
+                df_ub2 = df_ub.set_index('CODIGO')
+                df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
+ 
+
+
+                df_precipSup = verif_est_precip
+
+                #--------------------------------Generar archivo Tetis-----------------------------------------------
+                if archivoTetis_sele == 'Columna':
+                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'TempeEvapotColumna')
+
+                else:
+                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'TempeEvapotCEDEX')
+
+            #Seleccion = Ninguna en temperatura
+            elif (verif_est_temp == 'None'):
+                #--------------------------Lectura datos de precipitación-------------------------------------
+                rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                df_precipSup = abrirArchivos(rutaP, "P", precpGet)
+                df_precipSup = df_precipSup.fillna(-1)
+
+                #----------------Evapotranspiracion--------------------
+                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
+                df_ub2 = df_ub.set_index('CODIGO')
+                df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
+ 
+
+                df_tempSup = verif_est_temp
+
+                #--------------------------------Generar archivo Tetis-----------------------------------------------
+                if archivoTetis_sele == 'Columna':
+                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'PrecipEvapotColumna')
+
+                else:
+                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'PrecipEvapotCEDEX')
 
 
             else:
@@ -816,18 +920,26 @@ def climatologia_page():
                 #--------------------------Lectura datos de precipitación-------------------------------------
                 rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
-                df_precipSup = df_precipSup.fillna(-99)
+                df_precipSup = df_precipSup.fillna(-1)
 
                 #--------------------------Lectura datos de temperatura---------------------------------------
                 rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
-                df_tempSup = df_tempSup.fillna(-1)
+                df_tempSup = df_tempSup.fillna(-99)
+
+                #----------------Evapotranspiracion--------------------
+                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
+                df_ub2 = df_ub.set_index('CODIGO')
+                df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
+ 
+
                 #--------------------------------Generar archivo Tetis-----------------------------------------------
                 if archivoTetis_sele == 'Columna':
-                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'precipYtemp')
-                
-                else: 
-                    archivoCEDEX(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'precipYtemp')
+                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'PrecipTempEvapotColumna')
+
+                else:
+                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'PrecipTempEvapotCEDEX')
 
         else:
             #Estaciones seleccionadas de precipitacion
@@ -846,36 +958,63 @@ def climatologia_page():
             verif_est_temp = str_Temp.join(tempGet)
             #print(verif_est_temp)
 
+            #Estaciones seleccionadas de temperatura
+            evapotGet = request.form.getlist('calcEvapot_seleccionada')
+            # initialize an empty string
+            str_Evapot = " " 
+            # convert string  
+            verif_est_evapot = str_Evapot.join(evapotGet)
+
 
             if proyTemporal_sel == 'Anual':
                 #Seleccion = Ninguna en precipitacion
                 if str_rcps_sel == '2.5':
 
+                    #Ninugna precipitacion
                     if verif_est_precip == 'None':
                         #--------------------------Lectura datos de temperatura---------------------------------------
                         rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
+                        df_ub2 = df_ub.set_index('CODIGO')
+
                         df_tempSup_2011_2040 = df_tempSup + 0.89
-                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-1) 
+
+                        print(df_tempSup_2011_2040)
+
 
                         df_tempSup_2041_2070 = df_tempSup + 1.26
-                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-1) 
+
 
                         df_tempSup_2071_2100 = df_tempSup + 1.22
-                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)   
+
+                                                
+                        #----------------Evapotranspiracion--------------------
+                        df_evapot_2011_2040 = calcEvapotranspiracion(df_tempSup_2011_2040, df_ub2, df_radiacion, evapotGet)
+                        df_evapot_2041_2070 = calcEvapotranspiracion(df_tempSup_2041_2070, df_ub2, df_radiacion, evapotGet)
+                        df_evapot_2071_2100 = calcEvapotranspiracion(df_tempSup_2071_2100, df_ub2, df_radiacion, evapotGet)      
+
+
+                        df_tempSup_2011_2040 = df_tempSup_2011_2040.fillna(-99) 
+
+                        df_tempSup_2041_2070 = df_tempSup_2041_2070.fillna(-99) 
+
+                        df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-99) 
 
                         df_precipSup = verif_est_precip
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
                         if archivoTetis_sele == 'Columna':
-                            archivoEvento(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                            archivoEvento(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                            archivoEvento(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                            archivoEvento(df_precipSup, df_tempSup_2011_2040, df_evapot_2011_2040, df_ub, precpGet, tempGet, evapotGet, 'tempEvapot_2011_2040Columna')
+                            archivoEvento(df_precipSup, df_tempSup_2041_2070, df_evapot_2041_2070, df_ub, precpGet, tempGet, evapotGet, 'tempEvapot_2041_2070Columna')
+                            archivoEvento(df_precipSup, df_tempSup_2071_2100, df_evapot_2071_2100, df_ub, precpGet, tempGet, evapotGet, 'tempEvapot_2071_2100Columna')
                         
                         else:
-                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040,df_ub, precpGet, tempGet, 'temp_2011_2040')
-                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070,df_ub, precpGet, tempGet, 'temp_2041_2070')
-                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100,df_ub, precpGet, tempGet, 'temp_2071_2100')
+                            archivoCEDEX(df_precipSup, df_tempSup_2011_2040, df_evapot_2011_2040, df_ub, precpGet, tempGet, evapotGet, 'tempEvapot_2011_2040CEDEX')
+                            archivoCEDEX(df_precipSup, df_tempSup_2041_2070, df_evapot_2041_2070, df_ub, precpGet, tempGet, evapotGet, 'tempEvapot_2041_2070CEDEX')
+                            archivoCEDEX(df_precipSup, df_tempSup_2071_2100, df_evapot_2071_2100, df_ub, precpGet, tempGet, evapotGet, 'tempEvapot_2071_2100CEDEX')
+
+
+    
 
                     #Seleccion = Ninguna en temperatura
                     elif verif_est_temp == 'None':
