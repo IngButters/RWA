@@ -108,6 +108,22 @@ label {
 }
 
 
+/* Evapotranspiracion */
+.seleccion-calculo-evapotranspiracion {
+    margin: 1rem;
+    text-align: center;
+
+}
+
+.seleccion-calculo-evapotranspiracion label {
+    height: 25rem;
+}
+
+.seleccion-calculo-evapotranspiracion select {
+    height: 25rem;
+}
+
+
 /* Archivo Tetis */
 .seleccion-archivo-tetis {
     margin: 1rem;

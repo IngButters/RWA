@@ -15,7 +15,7 @@ cols = pd.read_csv(filename, nrows=1).columns
 df_precip_sup = pd.read_csv(filename, nrows=1, usecols=cols[:-1])#, usecols = columnas)
 
 # Missing data in tetis = -1
-#df_precip_sup = df_precip_sup.fillna(-1)
+df_precip_sup = df_precip_sup.fillna(-1)
 df_precip_sup = df_precip_sup.round(decimals=2)
 
 
@@ -26,48 +26,27 @@ cols = pd.read_csv(filenameTemp, nrows=1).columns
 df_temp_sup = pd.read_csv(filenameTemp, nrows=1, usecols=cols[1:])#, usecols = columnas)
 
 # Missing data temp in tetis = -99
-#df_temp_sup = df_temp_sup.fillna(-99)
+df_temp_sup = df_temp_sup.fillna(-99)
 df_temp_sup = df_temp_sup.round(decimals=2)
 
-#Estaciones para evapotranspiracion
-ruta_evapot = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/estaciones_sup_evapot.csv'
-cols_evapot = pd.read_csv(ruta_evapot, nrows=1).columns
-df_evapot_sup = pd.read_csv(ruta_evapot, usecols=cols_evapot[0:1])
-
-## Tabla radiacion
-ruta_rad = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/radiacion.csv'
-df_radiacion = pd.read_csv(ruta_rad)
-df_radiacion.rename(columns={'Latitud': 'latitud'}, inplace=True)
 
 
 #-----------------------------------Ubicacion estaciones precipitacion----------------------------------
 def ubicacion_estaciones(ruta_ub):
-    """     
-    Returns the dataframe of the location of stations
+    df_ubic_precip_sup = pd.read_csv(ruta_ub, usecols=['CODIGO','altitud','longitud','latitud'])
+    #df_ubic_precip_sup.set_index('CODIGO', inplace=True)
+    df_ubic_precip_sup = df_ubic_precip_sup.round(decimals=2)
+    #df_ubic_precip_sup = df_ubic_precip_sup.loc[list(map(int, filas[1:]))]
 
-            Parameters:
-                    ruta_ub (String): A string with the location of the file
+    return df_ubic_precip_sup
 
-            Returns:
-                    df_ubic (Dataframe): Dataframe with the information of the location of the stations
-     """
 
-    df_ubic = pd.read_csv(ruta_ub, usecols=['CODIGO','altitud','longitud','latitud'])
-    #df_ubic = df_ubic_precdf_ubicip_sup.round(decimals=2)
-
-    return df_ubic
-
+#----------------------------------Script Lectura de datos----------------------------------------------
 def abrirArchivos(ruta, letra, columnas):
-    """ 
-    Returns the dataframe of the data opened
-
-            Parameters:
-                    ruta (String): A string with the location of the file
-                    letra (String): A string with the identification of the data type -> P=Precipitation, T=Temperature
-
-            Returns:
-                    df_datos (Dataframe): Dataframe with the information of precipitation or temperature 
-
+    """ En esta función se abren los archivos con las columnas seleccionadas 
+        ruta: es la ruta del archivo
+        letra: es la identifiación del tipo de dato -> P=Precipitacion, T=Temperatura
+        return df_datos: retorna los datos seleccionados
     """
     if letra == "P":
         df_datos = pd.read_csv(ruta, usecols = columnas)
@@ -81,59 +60,43 @@ def abrirArchivos(ruta, letra, columnas):
 
     return df_datos
 
+
 #--------------------------------Generar archivo de evento txt-----------------------------------------
-def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, tempGet, evapotGet, nomb_archivo):
-    """     
-    Returns the column file format for Tetis software.
+def archivoEvento(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet, nomb_archivo):
 
-            Parameters:
-                    df_precip_sup (Dataframe): A pandas dataframe with precipitation data
-                    df_tempSup (Dataframe): A pandas dataframe with temperature data
-                    df_evapot (Dataframe): A pandas dataframe with the evapotranspiration data
-                    df_ubi_info (Dataframe): A pandas dataframe with the location of the stations
-                    precpGet (list): List of the precipitation stations selected
-                    tempGet (list): List of the temperature stations selected
-                    evapotGet (list): List of the evapotranspiration stations selected
-                    nomb_archivo (string): String of the file name
-
-
-            Returns:
-                    Tetis_file (txt file): File in the column format for Tetis software
-     """
-
-    #Check if the user selected precipitation data
+    #Inciar condicion de precipitacion
     if isinstance(df_precip_sup, pd.DataFrame):
         df_precip_sup_cond = df_precip_sup.loc[0].values[0]
     else:
         df_precip_sup_cond = df_precip_sup
 
-    #Check if the user selected temperature data
+        #Inciar condicion de precipitacion
     if isinstance(df_tempSup, pd.DataFrame):
         df_temp_sup_cond = df_tempSup.loc[0].values[0]
     else:
         df_temp_sup_cond = df_tempSup
 
-    #Check if the user selected evapotranspiration data
-    if isinstance(df_evapot, pd.DataFrame):
-        df_evapot_cond = df_evapot.loc[0].values[0]
-    else:
-        df_evapot_cond = df_evapot
-
     
 
 
-    #---------HEADER OF THE FILE-----------------------------------------------
+    #---------ENCABEZADO-----------------------------------------------
     Tetis_file = open(nomb_archivo+".txt","w+")
     
-    #Only temperature
-    if (df_precip_sup_cond == 'None' and df_evapot_cond == 'None'):
+    #Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
+    #Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
+    #Tetis_file.write("F           01-01-1950      00:00\n")
+
+    #if df_precip_sup == 'None' or df_precip_sup is None:
+    #if df_precip_sup is None or df_precip_sup == 'None':   
+    #if df_precip_sup.loc[0].values[0] == -999 or df_precip_sup == 'None':  
+    if df_precip_sup_cond == 'None':
                 
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
         Tetis_file.write("F           01-01-1950      00:00\n")
 
-        #Temperatura
+            #Temperatura
         for j in tempGet:
             Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])   +'\n')
 
@@ -146,8 +109,8 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
 
-    #Only precipitation
-    elif (df_temp_sup_cond == 'None' and df_evapot_cond == 'None'):
+    #elif df_tempSup == 'None':
+    elif df_temp_sup_cond == 'None':
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
@@ -166,80 +129,9 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
-    #Temperature and evapotranspiration
-    elif df_precip_sup_cond == 'None':
-                
-        
-        Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
-        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
 
-        #Temperatura
-        for j in tempGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])   +'\n')
-
-        for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
-
-
-        #-----------------------------INGRESAR LOS DATOS-------------------------------------------------------
-        df_total = pd.concat([df_tempSup,df_evapot], axis = 1)
-        df_total = df_total.round(decimals=2)
-        Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
-        Tetis_file.write('*')
-        Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
-
-    #Precipitation and evapotranspiration
-    elif (df_temp_sup_cond == 'None' and df_evapot_cond == 'None'):
-        #-------------------
-        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
-        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
-
-        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
-        #Precipitacion
-        for i in precpGet:
-            Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])   +'\n')  
-
-        for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
-
-
-
-                #-----------------------------INGRESAR LOS DATOS-------------------------------------------------------
-        df_total = pd.concat([df_precip_sup,df_evapot], axis = 1)
-        df_total = df_total.round(decimals=2)
-        Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
-        Tetis_file.write('*')
-        Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
-
-    #Only evapotranspiration
-    elif (df_temp_sup_cond == 'None' and df_precip_sup_cond == 'None'):
-        #-------------------
-        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
-        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
-
-        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
-        #Evapotranspiration
-        for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
-
-
-
-                #-----------------------------INGRESAR LOS DATOS-------------------------------------------------------
-        df_total = df_evapot
-        df_total = df_total.round(decimals=2)
-        Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
-        Tetis_file.write('*')
-        Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
-
-    #Total---------------
-    elif df_evapot_cond == 'None':
-                #--------------------
+    else:
+        #--------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
         Tetis_file.write("F           01-01-1950      00:00\n")
@@ -260,57 +152,16 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
-    else:
-        #--------------------
-        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
-        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
-
-        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
-        #Precipitacion
-        for i in precpGet:
-            Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])   +'\n')  
-        #Temperatura
-        for j in tempGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])   +'\n')
-        #Evapotranspiration
-        for k in evapotGet:
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
-
-
-
-
-        #-----------------------------INGRESAR LOS DATOS-------------------------------------------------------
-        df_total = pd.concat([df_precip_sup, df_tempSup,df_evapot], axis = 1)
-        df_total = df_total.round(decimals=2)
-        Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
-        Tetis_file.write('*')
-        Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
-
     Tetis_file.close()
     return Tetis_file
 
+
+
+
+
+
 #-------------------------------------------------------Archivo CEDEX------------------------------------------------------------------------
-def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, tempGet, evapotGet, nomb_archivo):
-
-    """     
-    Returns the CEDEX file format for Tetis software.
-
-            Parameters:
-                    df_precip_sup (Dataframe): A pandas dataframe with precipitation data
-                    df_tempSup (Dataframe): A pandas dataframe with temperature data
-                    df_evapot (Dataframe): A pandas dataframe with the evapotranspiration data
-                    df_ubi_info (Dataframe): A pandas dataframe with the location of the stations
-                    precpGet (list): List of the precipitation stations selected
-                    tempGet (list): List of the temperature stations selected
-                    evapotGet (list): List of the evapotranspiration stations selected
-                    nomb_archivo (string): String of the file name
-
-
-            Returns:
-                    Tetis_file (txt file): File in the CEDEX format for Tetis software
-     """
+def archivoCEDEX(df_precip_sup, df_tempSup, df_ubi_info, precpGet, tempGet, nomb_archivo):
 
     #Inciar condicion de precipitacion
     if isinstance(df_precip_sup, pd.DataFrame):
@@ -324,63 +175,27 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
     else:
         df_temp_sup_cond = df_tempSup
 
-    #Check if the user selected evapotranspiration data
-    if isinstance(df_evapot, pd.DataFrame):
-        df_evapot_cond = df_evapot.loc[0].values[0]
-    else:
-        df_evapot_cond = df_evapot
-
     
-    #---------HEADER-----------------------------------------------
+    #---------ENCABEZADO-----------------------------------------------
     Tetis_file = open(nomb_archivo+".txt","w+")
     
-    #Only temperature
-    if (df_precip_sup_cond == 'None' and df_evapot_cond == 'None'):
+    if df_precip_sup_cond == 'None':
                 
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
         Tetis_file.write("F           01-01-1950      00:00\n")
 
-
+    #Temperatura
+        #Temperatura
         for j in tempGet:
             arr_t = df_tempSup.T.loc[df_tempSup.T.index == j].to_numpy()
             Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')  
 
 
 
-    #Only precipitation
-    elif (df_temp_sup_cond == 'None' and df_evapot_cond == 'None'):
-        #-------------------
-        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
-        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
 
-        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
-        #Precipitacion
-        for i in precpGet:
-            arr_p = df_precip_sup.T.loc[df_precip_sup.T.index == i].to_numpy()
-            Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_p))  +'\n')  
-
-
-    #Temperature and evapotranspiration
-    elif df_precip_sup_cond == 'None':
-                
-        
-        Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
-        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
-
-
-        for j in tempGet:
-            arr_t = df_tempSup.T.loc[df_tempSup.T.index == j].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')  
-
-        for k in evapotGet:
-            arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
-
-    #Precipitation and evapotranspiration
+    #elif df_tempSup == 'None':
     elif df_temp_sup_cond == 'None':
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
@@ -393,43 +208,9 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
             arr_p = df_precip_sup.T.loc[df_precip_sup.T.index == i].to_numpy()
             Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_p))  +'\n')  
 
-        for k in evapotGet:
-            arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
-
-    #Only evapotranspiration
-    elif (df_temp_sup_cond == 'None' and df_precip_sup_cond == 'None'):
-        #-------------------
-        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
-        Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
-
-        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
-        #Evapotranspiration
-        for k in evapotGet:
-            arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
 
 
-    #Precipitation and temperature
-    elif df_evapot_cond == 'None':
-        #--------------------
-        Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
-        #Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
 
-        #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
-        #Precipitacion
-        for i in precpGet:
-            arr_p = df_precip_sup.T.loc[df_precip_sup.T.index == i].to_numpy()
-            Tetis_file.write('P         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == i,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_p))  +'\n')  
-
-        #Temperatura
-        for j in tempGet:
-            arr_t = df_tempSup.T.loc[df_tempSup.T.index == j].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')  
-
-    #Todos
     else:
         #--------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
@@ -447,28 +228,17 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
             arr_t = df_tempSup.T.loc[df_tempSup.T.index == j].to_numpy()
             Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'longitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == j,'altitud'].values[0])+' '+ (' '.join(' '.join('%0.2f' %x for x in y) for y in arr_t))  +'\n')  
 
-        #Evapotranspiration
-        for k in evapotGet:
-            arr_t = df_evapot.T.loc[df_evapot.T.index == k].to_numpy()
-            Tetis_file.write('T         "'+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'CODIGO'].values[0])   +'" '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'latitud'].values[0])   +' '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'longitud'].values[0])   +'      '+str(df_ubi_info.loc[df_ubi_info['CODIGO'] == k,'altitud'].values[0])   +'\n')
 
 
     Tetis_file.close()
     return Tetis_file
 
-#------------------Trimestre Precipitacion---------------------------------
+
+
+
+    
+#-------------------------------------------------------Trimestre Precipitacion---------------------------------------------------------------
 def trimestre_precip(df_precipSup, rcp_clima):
-    """     
-    Returns the the dataframe of the precipitation with climate change scenarios
-
-            Parameters:
-                    df_precip_sup (Dataframe): A pandas dataframe with precipitation data
-                    rcp_clima (String): A string that for the climate change scenario selected
-
-            Returns:
-                    (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) (Dataframe, Dataframe, Dataframe): Dataframe with climate change scenario for timelapse of 2011-2040, 2041-2070, 2071-2100
-     """
-
     df_precipSup['date'] = pd.date_range(start='01/01/1950', periods=len(df_precipSup), freq='D')
     df_precipSup.set_index(['date'], inplace=True)
     df_precipSup_2011_2040 = df_precipSup.copy(deep=True)
@@ -549,18 +319,8 @@ def trimestre_precip(df_precipSup, rcp_clima):
 
     return (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100)
 
-#---------------------Trimestre Temperatura------------------------------------------------
+#----------------------------------------------------------------Trimestre Temperatura------------------------------------------------
 def trimestre_temp(df_tempSup, rcp_clima):
-    """     
-    Returns the the dataframe of the temperature with climate change scenarios
-
-            Parameters:
-                    df_precip_sup (Dataframe): A pandas dataframe with precipitation data
-                    rcp_clima (String): A string that for the climate change scenario selected
-
-            Returns:
-                    (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) (Dataframe, Dataframe, Dataframe): Dataframe with climate change scenario for timelapse of 2011-2040, 2041-2070, 2071-2100
-    """
     df_tempSup['date'] = pd.date_range(start='01/01/1950', periods=len(df_tempSup), freq='D')
     df_tempSup.set_index(['date'], inplace=True)
     df_tempSup_2011_2040 = df_tempSup.copy(deep=True)
@@ -641,27 +401,13 @@ def trimestre_temp(df_tempSup, rcp_clima):
 
     return (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100)
 
+
+
 def calcEvapotranspiracion(df_tempSup, df_ub, df_radiacion,tempGet):
-    """     
-    Returns the dataframe of the evapotranspiration calculated with Turc Modified
-
-            Parameters:
-                    df_tempSup (Dataframe): A pandas dataframe with temperature data
-                    df_ub (Dataframe): A pandas dataframe with the location of the stations
-                    df_radiacion (Dataframe): A pandas dataframe with the location of the stations
-                    tempGet (list): List of the temperature stations selected
-
-            Returns:
-                    df_tempSup (Dataframe): Dataframe of the evapotranspiration calculated
-    """
-
     df_new = pd.DataFrame()
     HR = [82.065943, 82.91073, 85.125509, 85.536313, 85.341042, 83.060406, 80.410283, 78.7061, 79.407464, 83.32468, 85.336647, 84.15651]
     meses = ['Ene',	'Feb',	'Mar',	'Abr',	'May',	'Jun',	'Jul',	'Ago',	'Sep',	'Oct',	'Nov',	'Dic']
     K = [0.4, 0.37, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4]
-
-    df_tempSup['date'] = pd.date_range(start='01/01/1950', periods=len(df_tempSup), freq='D')
-    df_tempSup.set_index('date', inplace=True)
 
     for i in df_tempSup.columns:
         df_new = df_new.append(df_ub.loc[df_ub.index == i])
@@ -683,8 +429,14 @@ def calcEvapotranspiracion(df_tempSup, df_ub, df_radiacion,tempGet):
             
             df_tempSup[l][df_tempSup.index.month.isin([n])] = (df_tempSup[l][df_tempSup.index.month.isin([n])] * df_evapot.loc[df_evapot.index == l, m].values[0].squeeze())
 
-    df_tempSup = df_tempSup.fillna(-1)
     return df_tempSup
+
+
+
+
+
+
+
 
 
 @app.route("/")
@@ -732,8 +484,13 @@ def climatologia_page():
         
         estaciones = df_precip_sup.columns.values
         estacionesTemp = df_temp_sup.columns.values
-        estacionesEvapot = df_evapot_sup['CODIGO'].to_numpy()
 
+        calcEvapot = ['No','Si']
+        #Selecciona el si se calcula la evapotranspiracion
+        calcEvapot_sel = request.form.getlist('calcEvapot_seleccionada')
+        str_calcEvapot_sele = " " 
+        # convert string  
+        calcEvapot_sel = str_calcEvapot_sele.join(calcEvapot_sel)
 
 
         archivoTetis = ['Columna', 'Cedex']
@@ -767,40 +524,27 @@ def climatologia_page():
             verif_est_temp = str_Temp.join(tempGet)
             #print(verif_est_temp)
 
-            #Estaciones seleccionadas de temperatura
-            evapotGet = request.form.getlist('calcEvapot_seleccionada')
-            # initialize an empty string
-            str_Evapot = " " 
-            # convert string  
-            verif_est_evapot = str_Evapot.join(evapotGet)
-            print(verif_est_evapot)
-
             #Seleccion = Ninguna en precipitacion
             if verif_est_precip == 'None':
                 #--------------------------Lectura datos de temperatura---------------------------------------
                 rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
-                df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
-                df_ub2 = df_ub.set_index('CODIGO')
-                df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub, df_radiacion, evapotGet)
-                df_tempSup = df_tempSup.fillna(-99)
-
-                
+                df_tempSup = df_tempSup.fillna(-1)
 
                 df_precipSup = verif_est_precip
                 #--------------------------------Generar archivo Tetis-----------------------------------------------
                 if archivoTetis_sele == 'Columna':
-                    archivoEvento(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloTemp')
+                    archivoEvento(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloTemp')
 
                 else:
-                    archivoCEDEX(df_precipSup, df_tempSup, df_evapot, df_ub, precpGet, tempGet, evapotGet, 'soloTemp')
+                    archivoCEDEX(df_precipSup, df_tempSup,df_ub, precpGet, tempGet, 'soloTemp')
 
             #Seleccion = Ninguna en temperatura
             elif verif_est_temp == 'None':
                 #--------------------------Lectura datos de precipitación-------------------------------------
                 rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
-                df_precipSup = df_precipSup.fillna(-1)
+                df_precipSup = df_precipSup.fillna(-99)
 
                 df_tempSup = verif_est_temp
 
@@ -1739,7 +1483,7 @@ def climatologia_page():
 
 
 
-        return render_template('climatologia.html', tables=[df_precip_sup.to_html(classes='data', index=False)], titles=df_precip_sup.columns.values, cambioClimatico=cambioClimatico, proyecTemporal=proyecTemporal, rcps=rcps, estaciones=estaciones, estacionesTemp=estacionesTemp, estacionesEvapot=estacionesEvapot, archivoTetis=archivoTetis)
+        return render_template('climatologia.html', tables=[df_precip_sup.to_html(classes='data', index=False)], titles=df_precip_sup.columns.values, cambioClimatico=cambioClimatico, proyecTemporal=proyecTemporal, rcps=rcps, estaciones=estaciones, estacionesTemp=estacionesTemp, calcEvapot=calcEvapot, archivoTetis=archivoTetis)
 
         #return send_file(video, as_attachment=True)
             
@@ -1751,5 +1495,6 @@ def climatologia_page():
 
 if __name__ == '__main__': #checks if our file executes directly and not imported
     app.run(debug=True) #
+
 
 

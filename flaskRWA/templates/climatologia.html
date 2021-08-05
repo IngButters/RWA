@@ -82,10 +82,11 @@
 
         <!-- Calculo evapotranspiracion-->
         <div class="seleccion-calculo-evapotranspiracion">
-            <label for="calcEvapot_seleccionada">Calular la evapotranspiración:</label>
-            <select title='Calular la evapotranspiración' name="calcEvapot_seleccionada" method="GET" action="/">
-                <option value="{{calcEvapot[0]}}" selected>{{calcEvapot[0]}}</option>
-                {% for calcEvapot_seleccionada in calcEvapot[1:] %}
+            <label for="calcEvapot_seleccionada">Selecciones las estaciones para calcular la evapotranspiración:</label>
+            <select title='Calular la evapotranspiración' multiple name="calcEvapot_seleccionada" method="GET" action="/">
+                <option value="None" selected>Ninguna</option>
+                <option value="{{estacionesEvapot[0]}}">{{estacionesEvapot[0]}}</option>
+                {% for calcEvapot_seleccionada in estacionesEvapot[1:] %}
                     <option value="{{calcEvapot_seleccionada}}">{{calcEvapot_seleccionada}}</option>
                 {% endfor %}
             </select>
