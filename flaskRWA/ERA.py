@@ -751,6 +751,13 @@ def climatologia_page():
         df_ub = ubicacion_estaciones(ruta_ub)
         #print(df_ub_precipSup.head())
 
+        #--------------------------Lectura datos de temperatura---------------------------------------
+        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+
+        
+        #--------------------------Lectura datos de precipitación-------------------------------------
+        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+
 
         if cambioClimaticoSiNo == 'No':
             #Estaciones seleccionadas de precipitacion
@@ -780,7 +787,7 @@ def climatologia_page():
             #Seleccion = Ninguna en precipitacion y evapotranspiracion
             if (verif_est_precip == 'None' and verif_est_evapot == 'None'):
                 #--------------------------Lectura datos de temperatura---------------------------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                 df_tempSup = df_tempSup.fillna(-99)
 
@@ -804,7 +811,7 @@ def climatologia_page():
             #Seleccion = Ninguna en temperatura y evapotranspiracion
             elif (verif_est_temp == 'None' and verif_est_evapot == 'None'):
                 #--------------------------Lectura datos de precipitación-------------------------------------
-                rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
                 df_precipSup = df_precipSup.fillna(-1)
 
@@ -823,12 +830,12 @@ def climatologia_page():
             elif verif_est_evapot == 'None':
                         
                 #--------------------------Lectura datos de precipitación-------------------------------------
-                rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
                 df_precipSup = df_precipSup.fillna(-1)
 
                 #--------------------------Lectura datos de temperatura---------------------------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                 df_tempSup = df_tempSup.fillna(-99)
 
@@ -847,7 +854,7 @@ def climatologia_page():
             elif (verif_est_temp == 'None' and verif_est_precip == 'None'):
 
                 #----------------Evapotranspiracion--------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
                 df_ub2 = df_ub.set_index('CODIGO')
                 df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
@@ -870,12 +877,12 @@ def climatologia_page():
             #Ninguna en precipitacion
             elif (verif_est_precip == 'None'):
                 #--------------------------Lectura datos de temperatura---------------------------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                 df_tempSup = df_tempSup.fillna(-99)
 
                 #----------------Evapotranspiracion--------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
                 df_ub2 = df_ub.set_index('CODIGO')
                 df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
@@ -894,12 +901,12 @@ def climatologia_page():
             #Seleccion = Ninguna en temperatura
             elif (verif_est_temp == 'None'):
                 #--------------------------Lectura datos de precipitación-------------------------------------
-                rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
                 df_precipSup = df_precipSup.fillna(-1)
 
                 #----------------Evapotranspiracion--------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
                 df_ub2 = df_ub.set_index('CODIGO')
                 df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
@@ -918,17 +925,17 @@ def climatologia_page():
             else:
                         
                 #--------------------------Lectura datos de precipitación-------------------------------------
-                rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                 df_precipSup = abrirArchivos(rutaP, "P", precpGet)
                 df_precipSup = df_precipSup.fillna(-1)
 
                 #--------------------------Lectura datos de temperatura---------------------------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                 df_tempSup = df_tempSup.fillna(-99)
 
                 #----------------Evapotranspiracion--------------------
-                rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                 df_datos_evapot = abrirArchivos(rutaT, "T", evapotGet)
                 df_ub2 = df_ub.set_index('CODIGO')
                 df_evapot = calcEvapotranspiracion(df_datos_evapot, df_ub2, df_radiacion, evapotGet)
@@ -973,7 +980,7 @@ def climatologia_page():
                     #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -1023,7 +1030,7 @@ def climatologia_page():
                     #Ninguna en temperatura
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -1069,11 +1076,11 @@ def climatologia_page():
                     elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -1111,7 +1118,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -1145,7 +1152,7 @@ def climatologia_page():
                     #Solo precipitación
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -1189,7 +1196,7 @@ def climatologia_page():
 
                                                 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1217,11 +1224,11 @@ def climatologia_page():
                     else:
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -1244,7 +1251,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)  
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1276,7 +1283,7 @@ def climatologia_page():
                     #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -1327,7 +1334,7 @@ def climatologia_page():
                     #Ninguna en temperatura
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -1344,7 +1351,7 @@ def climatologia_page():
 
                                                 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1373,11 +1380,11 @@ def climatologia_page():
                     elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -1415,7 +1422,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -1449,7 +1456,7 @@ def climatologia_page():
                     #Solo precipitación
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -1493,7 +1500,7 @@ def climatologia_page():
 
                                                 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1521,11 +1528,11 @@ def climatologia_page():
                     else:
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -1548,7 +1555,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)  
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1580,7 +1587,7 @@ def climatologia_page():
                     #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -1632,7 +1639,7 @@ def climatologia_page():
                     #Ninguna en temperatura
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -1649,7 +1656,7 @@ def climatologia_page():
 
                                                 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1721,7 +1728,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -1755,7 +1762,7 @@ def climatologia_page():
                     #Solo precipitación
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -1799,7 +1806,7 @@ def climatologia_page():
 
                                                 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1828,11 +1835,11 @@ def climatologia_page():
                     else:
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -1855,7 +1862,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)  
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1887,7 +1894,7 @@ def climatologia_page():
                     #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -1937,7 +1944,7 @@ def climatologia_page():
                     #Ninguna en temperatura
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -1954,7 +1961,7 @@ def climatologia_page():
 
                                                 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -1984,11 +1991,11 @@ def climatologia_page():
                     elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -2026,7 +2033,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         df_ub2 = df_ub.set_index('CODIGO')
@@ -2060,7 +2067,7 @@ def climatologia_page():
                     #Solo precipitación
                     elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2104,7 +2111,7 @@ def climatologia_page():
 
                                                 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2134,11 +2141,11 @@ def climatologia_page():
                     else:
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                         #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -2161,7 +2168,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)  
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2194,7 +2201,7 @@ def climatologia_page():
                     #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2233,7 +2240,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2245,7 +2252,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2272,7 +2279,7 @@ def climatologia_page():
                     elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -2282,7 +2289,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2307,7 +2314,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2336,7 +2343,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2367,7 +2374,7 @@ def climatologia_page():
                         df_precipSup = verif_est_precip
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2392,7 +2399,7 @@ def climatologia_page():
 
                     else:
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2402,7 +2409,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-99)   
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -2444,7 +2451,7 @@ def climatologia_page():
                     #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2483,7 +2490,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2495,7 +2502,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2522,7 +2529,7 @@ def climatologia_page():
                     elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -2532,7 +2539,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2557,7 +2564,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2586,7 +2593,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2617,7 +2624,7 @@ def climatologia_page():
                         df_precipSup = verif_est_precip
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2642,7 +2649,7 @@ def climatologia_page():
 
                     else:
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2652,7 +2659,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-99)   
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -2693,7 +2700,7 @@ def climatologia_page():
                     #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2732,7 +2739,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2744,7 +2751,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2771,7 +2778,7 @@ def climatologia_page():
                     elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -2781,7 +2788,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2806,7 +2813,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2835,7 +2842,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2866,7 +2873,7 @@ def climatologia_page():
                         df_precipSup = verif_est_precip
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -2891,7 +2898,7 @@ def climatologia_page():
 
                     else:
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2901,7 +2908,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-99)   
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -2940,7 +2947,7 @@ def climatologia_page():
                      #Ninguna precipitacion
                     if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -2979,7 +2986,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -2991,7 +2998,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -3018,7 +3025,7 @@ def climatologia_page():
                     elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                                 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -3028,7 +3035,7 @@ def climatologia_page():
                         df_precipSup_2071_2100 = df_precipSup_2071_2100.fillna(-1)   
 
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -3053,7 +3060,7 @@ def climatologia_page():
                     #Solo temperatura
                     elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -3082,7 +3089,7 @@ def climatologia_page():
 
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         df_tempSup = verif_est_temp
@@ -3113,7 +3120,7 @@ def climatologia_page():
                         df_precipSup = verif_est_precip
 
                         #----------------Evapotranspiracion--------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                         df_ub2 = df_ub.set_index('CODIGO')
 
@@ -3138,7 +3145,7 @@ def climatologia_page():
 
                     else:
                         #--------------------------Lectura datos de temperatura---------------------------------------
-                        rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                        #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                         df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                         (df_tempSup_2011_2040, df_tempSup_2041_2070, df_tempSup_2071_2100) = trimestre_temp(df_tempSup, str_rcps_sel)
@@ -3148,7 +3155,7 @@ def climatologia_page():
                         df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-99)   
 
                         #--------------------------Lectura datos de precipitación-------------------------------------
-                        rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                        #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                         df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                         (df_precipSup_2011_2040, df_precipSup_2041_2070, df_precipSup_2071_2100) = trimestre_precip(df_precipSup, str_rcps_sel)
@@ -3182,13 +3189,13 @@ def climatologia_page():
                                   
 
 
-            if proyTemporal_sel == 'Ensamble':
+            elif proyTemporal_sel == 'Ensamble':
 
 
                 #Ninguna precipitacion
                 if (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot != 'None'):
                     #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                    #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                     df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                     df_ub2 = df_ub.set_index('CODIGO')
@@ -3240,7 +3247,7 @@ def climatologia_page():
                 #Ninguna en temperatura
                 elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot != 'None'):
                     #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                    #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                     df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                     df_tempSup = verif_est_temp
@@ -3257,7 +3264,7 @@ def climatologia_page():
 
                                             
                     #----------------Evapotranspiracion--------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                    #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                     df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                     df_ub2 = df_ub.set_index('CODIGO')
 
@@ -3286,11 +3293,11 @@ def climatologia_page():
                 elif (verif_est_precip != 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                             
                     #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                    #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                     df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                     #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                    #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                     df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                     #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -3331,7 +3338,7 @@ def climatologia_page():
                 #Solo temperatura
                 elif (verif_est_precip == 'None' and verif_est_temp != 'None' and verif_est_evapot == 'None'):
                     #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                    #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                     df_tempSup = abrirArchivos(rutaT, "T", tempGet)
 
                     df_ub2 = df_ub.set_index('CODIGO')
@@ -3365,7 +3372,7 @@ def climatologia_page():
                 #Solo precipitación
                 elif (verif_est_precip != 'None' and verif_est_temp == 'None' and verif_est_evapot == 'None'):
                     #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                    #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                     df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                     df_tempSup = verif_est_temp
@@ -3409,7 +3416,7 @@ def climatologia_page():
 
                                             
                     #----------------Evapotranspiracion--------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                    #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                     df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                     df_ub2 = df_ub.set_index('CODIGO')
 
@@ -3437,11 +3444,11 @@ def climatologia_page():
                 else:
                             
                     #--------------------------Lectura datos de precipitación-------------------------------------
-                    rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
+                    #rutaP = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/precipitacion_sup.csv'
                     df_precipSup = abrirArchivos(rutaP, "P", precpGet)
 
                     #--------------------------Lectura datos de temperatura---------------------------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                    #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                     df_tempSup = abrirArchivos(rutaT, "T", tempGet)
                     #--------------------------------Generar archivo Tetis-----------------------------------------------
 
@@ -3464,7 +3471,7 @@ def climatologia_page():
                     df_tempSup_2071_2100 = df_tempSup_2071_2100.fillna(-1)  
 
                     #----------------Evapotranspiracion--------------------
-                    rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
+                    #rutaT = 'C:/Users/Bender/Desktop/Mapas_ERA/Anexos_Final/Anexo A series IDEAM bruta/temperatura_sup.csv'
                     df_evapo = abrirArchivos(rutaT, "T", evapotGet)
                     df_ub2 = df_ub.set_index('CODIGO')
 
