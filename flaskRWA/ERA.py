@@ -52,7 +52,7 @@ def ubicacion_estaciones(ruta_ub):
                     df_ubic (Dataframe): Dataframe with the information of the location of the stations
      """
 
-    df_ubic = pd.read_csv(ruta_ub, usecols=['CODIGO','altitud','longitud','latitud'])
+    df_ubic = pd.read_csv(ruta_ub, usecols=['CODIGO','altitud','longitud','latitud'], encoding='latin-1')
     #df_ubic = df_ubic_precdf_ubicip_sup.round(decimals=2)
 
     return df_ubic
