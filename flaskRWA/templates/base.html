@@ -20,15 +20,16 @@
             <nav class="navbar navbar-expand-lg navbar-dark menu shadow fixed-top">
                 <div class="container">
                     <a class="navbar-brand" href="#">
-                        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="logo image" width="50%" height="50%">
+                        <img src="{{ url_for('static', filename='images/Clima_Data.png') }}" alt="logo image" width="7.5%" height="7.5%">
                     </a>
 
                     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                         <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{ url_for('home_page') }}">Inicio</a>
+                            <!-- <a class="nav-link active" aria-current="page" href="{{ url_for('home_page') }}">Inicio</a> -->
+                            <a class="nav-link" href="{{ url_for('climatologia_page') }}">Inicio</a>
                         </li>
-                        <li class="nav-item">
+<!--                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('climatologia_page') }}">Climatología</a>
                         </li>
                         <li class="nav-item">
@@ -36,7 +37,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">FAQ</a>
-                        </li>
+                        </li> -->
                         </ul>
                     </div>
                 </div>

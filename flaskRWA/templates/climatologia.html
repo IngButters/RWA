@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Climatología
+    Inicio
 {% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/climatologia.css') }}">
-<h1>Generación de archivo Tetis</h1>
+<h1>Generación serie de datos</h1>
 
 <!-- <div class="table-div">
     <table class="table">                
@@ -58,8 +58,8 @@
 
         <!-- Datos de precipitación -->
         <div class="seleccion-estacion">
-            <label for="estacion">Seleccione estaciones en superficie con datos de precipitación:</label>
-            <select title='Seleccionar las estaciones de precipitación en superficie' multiple name="estacion" method="GET" action="/">
+            <label for="estacion">Seleccione estaciones con datos de precipitación:</label>
+            <select title='Seleccionar las estaciones de precipitación' multiple name="estacion" method="GET" action="/">
                 <option value="None" selected>Ninguna</option>
                 <option value="{{estaciones[0]}}">{{estaciones[0]}}</option>
                 {% for estacion in estaciones[1:] %}
@@ -70,8 +70,8 @@
 
         <!-- Datos de temperatura -->
         <div class="seleccion-estacion-temp">
-            <label for="estacionTemp">Seleccione estaciones en superficie con datos de temperatura:</label>
-            <select title='Seleccionar las estaciones de temperatura en superficie' multiple name="estacionTemp" method="GET" action="/">
+            <label for="estacionTemp">Seleccione estaciones con datos de temperatura:</label>
+            <select title='Seleccionar las estaciones de temperatura' multiple name="estacionTemp" method="GET" action="/">
                 <option value="None" selected>Ninguna</option>
                 <option value="{{estacionesTemp[0]}}">{{estacionesTemp[0]}}</option>
                 {% for estacionTemp in estacionesTemp[1:] %}
@@ -82,7 +82,7 @@
 
         <!-- Calculo evapotranspiracion-->
         <div class="seleccion-calculo-evapotranspiracion">
-            <label for="calcEvapot_seleccionada">Selecciones las estaciones para calcular la evapotranspiración:</label>
+            <label for="calcEvapot_seleccionada">Seleccione las estaciones para calcular la evapotranspiración:</label>
             <select title='Calular la evapotranspiración' multiple name="calcEvapot_seleccionada" method="GET" action="/">
                 <option value="None" selected>Ninguna</option>
                 <option value="{{estacionesEvapot[0]}}">{{estacionesEvapot[0]}}</option>
