@@ -5,6 +5,12 @@ import matplotlib.pyplot as plt
 from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 
+#To execute
+#1. cd flaskRWA
+#2. $env:FLASK_APP = "ERA.py"
+#3. $env:FLASK_DEBUG = 1
+#4. python -m flask run 
+
 currentdirectory = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
 
@@ -131,7 +137,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #Temperatura
         for j in tempGet:
@@ -141,7 +147,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         df_total = df_tempSup
         df_total = df_total.round(decimals=2)
         Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
+        Tetis_file.write('* desde:  01/01/2000  hasta:  31/12/2020\n')
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
@@ -151,7 +157,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Precipitacion
@@ -162,7 +168,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         df_total = df_precip_sup
         df_total = df_total.round(decimals=2)
         Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
+        Tetis_file.write('* desde:  01/01/2000  hasta:  31/12/2020\n')
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
@@ -172,7 +178,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #Temperatura1
         for j in tempGet:
@@ -186,7 +192,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         df_total = pd.concat([df_tempSup,df_evapot], axis = 1)
         df_total = df_total.round(decimals=2)
         Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
+        Tetis_file.write('* desde:  01/01/2000  hasta:  31/12/2020\n')
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
@@ -195,7 +201,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Precipitacion
@@ -211,7 +217,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         df_total = pd.concat([df_precip_sup,df_evapot], axis = 1)
         df_total = df_total.round(decimals=2)
         Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
+        Tetis_file.write('* desde:  01/01/2000  hasta:  31/12/2020\n')
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
@@ -220,7 +226,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Evapotranspiration
@@ -233,7 +239,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         df_total = df_evapot
         df_total = df_total.round(decimals=2)
         Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
+        Tetis_file.write('* desde:  01/01/2000  hasta:  31/12/2020\n')
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
@@ -256,7 +262,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         df_total = pd.concat([df_precip_sup, df_tempSup], axis = 1)
         df_total = df_total.round(decimals=2)
         Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
+        Tetis_file.write('* desde:  01/01/2000  hasta:  31/12/2020\n')
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
@@ -264,7 +270,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         #--------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Precipitacion
@@ -284,7 +290,7 @@ def archivoEvento(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, t
         df_total = pd.concat([df_precip_sup, df_tempSup,df_evapot], axis = 1)
         df_total = df_total.round(decimals=2)
         Tetis_file.write("*dt(dia)\n")
-        Tetis_file.write('* desde:  01/01/1950  hasta:  31/12/2021\n')
+        Tetis_file.write('* desde:  01/01/2000  hasta:  31/12/2020\n')
         Tetis_file.write('*')
         Tetis_file.write(df_total[df_total.columns].to_string(col_space=7))
 
@@ -340,7 +346,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
 
         for j in tempGet:
@@ -354,7 +360,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Precipitacion
@@ -369,7 +375,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         
         Tetis_file.write("G               "+str(len(df_tempSup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
 
         for j in tempGet:
@@ -385,7 +391,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Precipitacion
@@ -402,7 +408,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         #-------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Evapotranspiration
@@ -416,7 +422,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         #--------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         #Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Precipitacion
@@ -434,7 +440,7 @@ def archivoCEDEX(df_precip_sup, df_tempSup, df_evapot, df_ubi_info, precpGet, te
         #--------------------
         Tetis_file.write("G               "+str(len(df_precip_sup))+"         1440\n")
         #Tetis_file.write("*         dd-mm-aaaa  hh:mm\n")
-        Tetis_file.write("F           01-01-1950      00:00\n")
+        Tetis_file.write("F           01-01-2000      00:00\n")
 
         #---------------------COLOCAR LOS DATOS DE UBICACION DE LOS PUNTOS O ESTACIONES------------------------------------------------------
         #Precipitacion
@@ -665,7 +671,7 @@ def calcEvapotranspiracion(df_tempSup, df_ub, df_radiacion,tempGet):
     df_tempSup.set_index('date', inplace=True)
 
     for i in df_tempSup.columns:
-        df_new = df_new.append(df_ub.loc[df_ub.index == i])
+        df_new = df_new.append(df_ub.loc[df_ub.index == int(i)])
 
     df_radiacion = pd.concat([df_radiacion,df_new[['latitud']]],ignore_index = False).sort_values(['latitud'], ascending=True)
     df_radiacion = df_radiacion.interpolate()
@@ -682,7 +688,7 @@ def calcEvapotranspiracion(df_tempSup, df_ub, df_radiacion,tempGet):
     for l in tempGet:
         for n, m, p in zip(range(1,13),meses,N):
             
-            df_tempSup[l][df_tempSup.index.month.isin([n])] = (df_tempSup[l][df_tempSup.index.month.isin([n])] * df_evapot.loc[df_evapot.index == l, m].values[0].squeeze())
+            df_tempSup[l][df_tempSup.index.month.isin([n])] = (df_tempSup[l][df_tempSup.index.month.isin([n])] * df_evapot.loc[df_evapot.index == int(l), m].values[0].squeeze())
             df_tempSup[l][df_tempSup.index.month.isin([n])] = ((df_tempSup[l][df_tempSup.index.month.isin([n])])/p)
             
 
